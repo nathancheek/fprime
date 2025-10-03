@@ -536,9 +536,9 @@ class TlmPacketParser(object):
             enum_file = search_for_file("Enumeration", enum_file)
             enum_model = XmlEnumParser.XmlEnumParser(enum_file)
             enum_type = enum_model.get_namespace() + "::" + enum_model.get_name()
-            self.add_type_size(
-                enum_type, 4
-            )  # Fixme: can we put this in a constant somewhere?
+            serialize_type = enum_model.get_serialize_type()
+            enum_size = self.get_type_size(serialize_type, 0)
+            self.add_type_size(enum_type, enum_size)
 
     def process_array_files(self, array_file_list):
         for array_file in array_file_list:
