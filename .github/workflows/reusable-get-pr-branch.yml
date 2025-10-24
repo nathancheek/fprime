@@ -15,7 +15,7 @@ on:
         description: 'Ref to use if the PR branch is not found'
         type: string
         required: false
-        default: devel
+        default: v3.6.0
     outputs:
       target-branch:
         value: ${{ jobs.runs.outputs.target-branch }}
