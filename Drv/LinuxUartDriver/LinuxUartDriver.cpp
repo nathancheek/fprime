@@ -312,7 +312,7 @@ Drv::SendStatus LinuxUartDriver ::send_handler(const NATIVE_INT_TYPE portNum, Fw
             this->log_WARNING_HI_WriteError(_arg, stat);
             status = Drv::SendStatus::SEND_ERROR;
         } else {
-            this->m_bytesSent += static_cast<FwSizeType>(stat);
+            this->m_bytesSent += static_cast<U32>(stat);
             this->tlmWrite_BytesSent(this->m_bytesSent);
         }
     }
@@ -360,7 +360,7 @@ void LinuxUartDriver ::serialReadTaskEntry(void* ptr) {
         } else if (stat > 0) {
             buff.setSize(static_cast<U32>(stat));
             status = RecvStatus::RECV_OK;  // added by m.chase 03.06.2017
-            comp->m_bytesReceived += static_cast<FwSizeType>(stat);
+            comp->m_bytesReceived += static_cast<U32>(stat);
             comp->tlmWrite_BytesRecv(comp->m_bytesReceived);
         } else {
             status = RecvStatus::RECV_ERROR; // Simply to return the buffer

@@ -106,9 +106,9 @@ class LinuxUartDriver : public LinuxUartDriverComponentBase {
 
     Os::Task m_readTask;  //!< task instance for thread to read serial port
 
-    FwSizeType m_bytesSent;      //!< number of bytes sent
-    FwSizeType m_bytesReceived;  //!< number of bytes received
-    bool m_quitReadThread;       //!< flag to quit thread
+    U32 m_bytesSent;        //!< number of bytes sent
+    U32 m_bytesReceived;    //!< number of bytes received
+    bool m_quitReadThread;  //!< flag to quit thread
 };
 
 }  // end namespace Drv
