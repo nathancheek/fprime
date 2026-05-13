@@ -164,7 +164,7 @@ namespace Svc {
                     return;
                 }
                 // serialize record size = id field + data
-                U32 recordSize = static_cast<U32>(sizeof(FwPrmIdType) + this->m_db[entry].val.getBuffLength());
+                FwSizeStoreType recordSize = static_cast<FwSizeStoreType>(sizeof(FwPrmIdType) + this->m_db[entry].val.getBuffLength());
 
                 // reset buffer
                 buff.resetSer();
@@ -296,7 +296,7 @@ namespace Svc {
                 return;
             }
 
-            U32 recordSize = 0;
+            FwSizeStoreType recordSize = 0;
             // read record size
             readSize = sizeof(recordSize);
 
@@ -321,7 +321,7 @@ namespace Svc {
 
             // sanity check value. It can't be larger than the maximum parameter buffer size + id
             // or smaller than the record id
-            if ((recordSize > FW_PARAM_BUFFER_MAX_SIZE + sizeof(U32)) or (recordSize < sizeof(U32))) {
+            if ((recordSize > FW_PARAM_BUFFER_MAX_SIZE + sizeof(FwPrmIdType)) or (recordSize < sizeof(FwPrmIdType))) {
                 this->log_WARNING_HI_PrmFileReadError(PrmReadError::RECORD_SIZE_VALUE,static_cast<I32>(recordNum),static_cast<I32>(recordSize));
                 return;
             }
