@@ -51,7 +51,7 @@ namespace Svc {
     }
 
     void PrmDbImpl::clearDb() {
-        for (I32 entry = 0; entry < PRMDB_NUM_DB_ENTRIES; entry++) {
+        for (FwPrmIdType entry = 0; entry < PRMDB_NUM_DB_ENTRIES; entry++) {
             this->m_db[entry].used = false;
             this->m_db[entry].id = 0;
         }
@@ -64,7 +64,7 @@ namespace Svc {
         // search for entry
         Fw::ParamValid stat = Fw::ParamValid::INVALID;
 
-        for (I32 entry = 0; entry < PRMDB_NUM_DB_ENTRIES; entry++) {
+        for (FwPrmIdType entry = 0; entry < PRMDB_NUM_DB_ENTRIES; entry++) {
             if (this->m_db[entry].used) {
                 if (this->m_db[entry].id == id) {
                     val = this->m_db[entry].val;
@@ -91,7 +91,7 @@ namespace Svc {
         bool existingEntry = false;
         bool noSlots = true;
 
-        for (NATIVE_INT_TYPE entry = 0; entry < PRMDB_NUM_DB_ENTRIES; entry++) {
+        for (FwPrmIdType entry = 0; entry < PRMDB_NUM_DB_ENTRIES; entry++) {
             if ((this->m_db[entry].used) && (id == this->m_db[entry].id)) {
                 this->m_db[entry].val = val;
                 existingEntry = true;
@@ -101,7 +101,7 @@ namespace Svc {
 
         // if there is no existing entry, add one
         if (!existingEntry) {
-            for (I32 entry = 0; entry < PRMDB_NUM_DB_ENTRIES; entry++) {
+            for (FwPrmIdType entry = 0; entry < PRMDB_NUM_DB_ENTRIES; entry++) {
                 if (!(this->m_db[entry].used)) {
                     this->m_db[entry].val = val;
                     this->m_db[entry].id = id;
@@ -142,7 +142,7 @@ namespace Svc {
 
         U32 numRecords = 0;
 
-        for (NATIVE_UINT_TYPE entry = 0; entry < FW_NUM_ARRAY_ELEMENTS(this->m_db); entry++) {
+        for (FwPrmIdType entry = 0; entry < FW_NUM_ARRAY_ELEMENTS(this->m_db); entry++) {
             if (this->m_db[entry].used) {
                 // write delimiter
                 static const U8 delim = PRMDB_ENTRY_DELIMITER;
@@ -268,7 +268,7 @@ namespace Svc {
 
         this->clearDb();
 
-        for (NATIVE_INT_TYPE entry = 0; entry < PRMDB_NUM_DB_ENTRIES; entry++)  {
+        for (FwPrmIdType entry = 0; entry < PRMDB_NUM_DB_ENTRIES; entry++)  {
 
             U8 delimiter;
             FwSignedSizeType readSize = static_cast<FwSignedSizeType>(sizeof(delimiter));
