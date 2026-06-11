@@ -143,10 +143,10 @@ void FileDownlink ::pingIn_handler(const FwIndexType portNum, U32 key) {
 void FileDownlink ::bufferReturn_handler(const FwIndexType portNum, Fw::Buffer& fwBuffer) {
     // If this is a stale buffer (old, timed-out, or both), then ignore its return.
     // File downlink actions only respond to the return of the most-recently-sent buffer.
-    if (this->m_lastBufferId != fwBuffer.getContext() + 1 || this->m_mode.get() == Mode::IDLE) {
+    if (this->m_lastBufferId != fwBuffer.getContext() + 1 || this->m_mode.get() == Mode::IDLE || this->m_mode.get() == Mode::COOLDOWN) {
         return;
     }
-    // Non-ignored buffers cannot be returned in "DOWNLINK" and "IDLE" state.  Only in "WAIT", "CANCEL" state.
+    // Non-ignored buffers cannot be returned in "DOWNLINK", "IDLE", or "COOLDOWN" state.  Only in "WAIT", "CANCEL" state.
     FW_ASSERT(this->m_mode.get() == Mode::WAIT || this->m_mode.get() == Mode::CANCEL,
               static_cast<FwAssertArgType>(this->m_mode.get()));
     // If the last packet has been sent (and is returning now) then finish the file
@@ -451,7 +451,7 @@ void FileDownlink ::downlinkPacket() {
         this->sendCancelPacket();
         this->m_lastCompletedType = Fw::FilePacket::T_CANCEL;
     }
-    // If in downlink mode and currently downlinking data then continue with the next packer
+    // If in downlink mode and currently downlinking data then continue with the next packet
     else if (this->m_mode.get() == Mode::DOWNLINK && this->m_lastCompletedType == Fw::FilePacket::T_START) {
         // Send the next packet, or fail doing so
         const Os::File::Status status = this->sendDataPacket(this->m_byteOffset);
