@@ -123,7 +123,9 @@ U32 configuration_to_event_flags(Drv::LinuxGpioDriver::GpioConfiguration configu
 }
 
 LinuxGpioDriver ::~LinuxGpioDriver() {
-    (void) ::close(this->m_fd);
+    if (this->m_fd >= 0) {
+        (void)::close(this->m_fd);
+    }
 }
 
 // ----------------------------------------------------------------------
@@ -209,6 +211,7 @@ Os::File::Status LinuxGpioDriver ::open(const char* device,
     }
     // Check if the GPIO line exists
     if (gpio >= chip_info.lines) {
+        status = Os::File::Status::DOESNT_EXIST;
         this->log_WARNING_HI_OpenPinError(Fw::String(device), gpio, Fw::String("Does Not Exist"),
                                           Os::FileStatus(static_cast<Os::FileStatus::T>(status)));
         return status;
